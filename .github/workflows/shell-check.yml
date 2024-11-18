@@ -1,0 +1,44 @@
+name: 'Shell Script CI'
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.sh'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.sh'
+
+jobs:
+  shellcheck:
+    name: 'ShellCheck'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Run ShellCheck
+      uses: ludeeus/action-shellcheck@master
+      with:
+        severity: warning
+        scandir: '.'
+        format: tty
+
+  shell-format:
+    name: 'Shell Format'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install shfmt
+      run: |
+        curl -sS https://webinstall.dev/shfmt | bash
+        export PATH="/home/runner/.local/bin:$PATH"
+
+    - name: Run shfmt
+      run: |
+        find . -name '*.sh' -exec shfmt -l -w {} +

@@ -1,0 +1,40 @@
+name: 'Nginx CI'
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'app/nginx/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/nginx/**'
+
+jobs:
+  nginx-test:
+    name: 'Nginx Config Test'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install nginx
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y nginx
+
+    - name: Test nginx configuration
+      run: |
+        sudo nginx -t -c ${{ github.workspace }}/app/nginx/nginx.conf
+      continue-on-error: true
+
+    - name: Check SSL configuration (Mozilla SSL Configuration Generator)
+      uses: mozilla/ssl-config-generator@master
+      with:
+        config: intermediate
+        server: nginx
+        hsts: strict
+        ocsp: true
+        output: ${{ github.workspace }}/app/nginx/ssl.conf
+      continue-on-error: true
