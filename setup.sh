@@ -142,6 +142,13 @@ curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo npm install -g pm2 yarn
 
+# Setup Python environment
+log "Setting up Python environment..."
+sudo apt-get install -y python3-venv
+python3 -m venv "$PROJECT_ROOT/$PROJECT_NAME/shared/venv"
+source "$PROJECT_ROOT/$PROJECT_NAME/shared/venv/bin/activate"
+pip install -r requirements.txt
+
 # Configure cron jobs
 log "Setting up cron jobs..."
 sudo mkdir -p /etc/cron.d
@@ -154,6 +161,9 @@ cat > "/etc/cron.d/$PROJECT_NAME" << EOL
 
 # Monthly maintenance
 0 4 1 * * www-data /var/www/$PROJECT_NAME/current/maintenance/monthly.sh
+
+# Application cron jobs
+*/5 * * * * www-data /var/www/$PROJECT_NAME/shared/venv/bin/python /var/www/$PROJECT_NAME/current/scripts/cron.py
 EOL
 
 # Setup log rotation

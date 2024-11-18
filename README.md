@@ -1,57 +1,60 @@
-# VM Template for Next.js Applications
+# Container Template for Next.js Applications
 
-A comprehensive virtual machine template for deploying and managing Next.js applications. This template provides standardized application setup, database management, and local maintenance tasks.
+A lightweight LXD container template for deploying and managing Next.js applications. This template provides standardized application setup, database management, and local maintenance tasks in an efficient container environment.
 
 ## Features
 
 - 🚀 **Application Management**
-  - Next.js deployment configuration
+  - Next.js deployment in containers
   - Nginx setup with optimizations
   - SSL certificate management
   - Zero-downtime deployments
 
 - 💾 **Database Management**
-  - PostgreSQL configuration
+  - PostgreSQL in containers
   - Local backup management
   - Performance tuning
   - Maintenance routines
 
-- 📊 **Local Monitoring**
-  - Application metrics
+- 📊 **Container Monitoring**
+  - Resource usage metrics
+  - Application monitoring
   - Database monitoring
-  - Resource usage tracking
-  - Health check endpoints
+  - Network statistics
 
-- 🔧 **Maintenance**
-  - Log rotation
-  - Local backups
-  - Application updates
-  - Database optimization
+- 🔒 **Security**
+  - Container isolation
+  - Resource limits
+  - Network segmentation
+  - Minimal attack surface
 
-## Prerequisites
+## Container Configuration
 
-- Ubuntu 22.04 LTS VM
-- Connection to VPS infrastructure
-- Domain/subdomain for the application
-- GitHub repository with Next.js project
+- Base Image: Ubuntu 22.04 LTS
+- Resources:
+  - 2GB RAM (configurable)
+  - 2 vCPUs (configurable)
+  - 20GB storage (expandable)
+- Network:
+  - Bridge networking
+  - NAT for outbound traffic
+  - Optional host port mapping
 
 ## Quick Start
 
-1. Clone this repository:
+1. Create a new container:
 ```bash
-git clone https://github.com/yourusername/vm-template.git
-cd vm-template
+lxc launch ubuntu:22.04 nextjs-app -p default
 ```
 
-2. Configure environment variables:
+2. Configure the container:
 ```bash
-cp app/env/.env.example .env
-nano .env
+./scripts/setup-container.sh nextjs-app
 ```
 
-3. Run the installation:
+3. Deploy your application:
 ```bash
-./install.sh
+./scripts/deploy-app.sh nextjs-app /path/to/your/app
 ```
 
 ## Directory Structure
@@ -104,12 +107,12 @@ PM2_INSTANCES=         # Number of PM2 instances
 - Regular maintenance
 - Backup verification
 
-## Local Monitoring
+## Container Monitoring
 
-- Application metrics export
-- Resource usage tracking
-- Health check endpoints
-- Error rate monitoring
+- Resource usage metrics
+- Application monitoring
+- Database monitoring
+- Network statistics
 
 ## Maintenance
 
